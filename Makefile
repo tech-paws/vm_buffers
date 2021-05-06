@@ -5,7 +5,7 @@ CXXFLAGS = -I. -Isrc/ -Ipublic/cpp/ -Wall -std=c++17 -g3
 
 UNAME_S := $(shell uname -s)
 
-SOURCES := $(shell find src -type f -name '*.cpp' -maxdepth 1)
+SOURCES := $(shell find src -type f -name '*.cpp' ! -name 'tests.cpp' -maxdepth 1)
 OBJECTS := $(addprefix $(BUILDDIR)/,$(SOURCES:%.cpp=%.o))
 
 LIBRARY = libvm_buffers.so
@@ -20,7 +20,7 @@ $(BUILDDIR)/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(IMGUI_FLAGS) -c $< -o $@
 
 test: $(OBJECTS)
-	$(CXX) $(LDFLAGS) $(OBJECTS) -o build/test
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJECTS) src/tests.cpp -o build/test
 	./build/test
 
 clean:
