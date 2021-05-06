@@ -19,5 +19,9 @@ $(BUILDDIR)/%.o: %.cpp
 	mkdir -p $(BUILDDIR)/$(dir $<)
 	$(CXX) $(CXXFLAGS) $(IMGUI_FLAGS) -c $< -o $@
 
+test: $(OBJECTS)
+	$(CXX) $(LDFLAGS) $(OBJECTS) -o build/test
+	./build/test
+
 clean:
 	rm -rf $(BUILDDIR)
