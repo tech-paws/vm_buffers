@@ -41,6 +41,4 @@ private:
 
     size_t buffer_size;
     size_t buffer_cursor = 0;
-
-    bool is_endian_mismatch();
 };
