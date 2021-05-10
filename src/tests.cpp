@@ -228,14 +228,14 @@ static void read_int64_t_le_test() {
     puts("Read int64_t - little endian test");
 
     const auto value = bytes_reader_le.read_int64_t();
-    TEST_ASSERT(value == 1934985738392383833, "value = %ld", value);
+    TEST_ASSERT(value == 1934985738392383833, "value = %lld", value);
 }
 
 static void read_int64_t_be_test() {
     puts("Read int64_t - big endian test");
 
     const auto value = bytes_reader_be.read_int64_t();
-    TEST_ASSERT(value == 1934985738392383833, "value = %ld", value);
+    TEST_ASSERT(value == 1934985738392383833, "value = %lld", value);
 }
 
 static void read_float_le_test() {
