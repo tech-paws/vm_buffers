@@ -2,8 +2,7 @@
 #include <cassert>
 #include <array>
 
-#include "bytes_writer.hpp"
-#include "bytes_reader.hpp"
+#include "vm_buffers.hpp"
 
 #define TEST_ASSERT(condition, hint, ...) \
 { \

@@ -1,4 +1,5 @@
-#include "bytes_writer.hpp"
+#include "vm_buffers.hpp"
+#include "helpers.hpp"
 
 extern "C" BytesWriter vm_buffers_create_bytes_writer(ByteOrder byte_order, uint8_t* buffer, size_t buffer_size) {
     BytesWriter writer;

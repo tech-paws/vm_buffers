@@ -1,4 +1,5 @@
-#include "bytes_reader.hpp"
+#include "vm_buffers.hpp"
+#include "helpers.hpp"
 
 extern "C" BytesReader vm_buffers_create_bytes_reader(ByteOrder byte_order, uint8_t* buffer, size_t buffer_size) {
     BytesReader reader;
