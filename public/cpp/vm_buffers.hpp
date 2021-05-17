@@ -5,16 +5,10 @@
 #include <array>
 #include <algorithm>
 
-enum class ByteOrder {
+enum ByteOrder {
     LittleEndian,
     BigEndian,
     Native,
-};
-
-extern "C"
-struct BytesBuffer {
-    std::byte const* data;
-    size_t length;
 };
 
 bool is_endian_mismatch(ByteOrder byte_order);
