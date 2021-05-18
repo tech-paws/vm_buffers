@@ -5,3 +5,11 @@ version = 3
 [[package]]
 name = "vm_buffers"
 version = "0.1.0"
+dependencies = [
+ "vm_memory",
+]
+
+[[package]]
+name = "vm_memory"
+version = "0.1.0"
+source = "git+https://github.com/tech-paws/vm_memory.git#ff04d36f6344e055240e7d3b6ff01a8e287e4f2c"
