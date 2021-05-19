@@ -39,6 +39,10 @@ impl BytesReader {
         BytesReader { instance }
     }
 
+    pub fn reset(&mut self) {
+        unsafe { vm_buffers::vm_buffers_bytes_reader_reset(&mut self.instance) };
+    }
+
     pub fn read_byte(&mut self) -> u8 {
         unsafe { vm_buffers::vm_buffers_bytes_reader_read_byte(&mut self.instance) }
     }
@@ -83,6 +87,10 @@ impl BytesWriter {
         };
 
         BytesWriter { instance }
+    }
+
+    pub fn clear(&mut self) {
+        unsafe { vm_buffers::vm_buffers_bytes_writer_clear(&mut self.instance) };
     }
 
     pub fn write_byte(&mut self, value: u8) {
