@@ -27,7 +27,7 @@ pub enum ByteOrder {
 }
 
 impl BytesReader {
-    pub fn new(byte_order: ByteOrder, buffer_accessor: &dyn BufferAccessor) -> Self {
+    pub fn new<T: BufferAccessor>(byte_order: ByteOrder, buffer_accessor: &T) -> Self {
         let instance = unsafe {
             vm_buffers::vm_buffers_create_bytes_reader(
                 byte_order as u32,
