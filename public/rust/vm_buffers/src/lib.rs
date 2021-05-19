@@ -4,6 +4,12 @@ mod vm_buffers;
 
 use vm_memory::BufferAccessor;
 
+pub trait IntoVMBuffers<T> {
+    fn read_from_buffers(bytes_reader: &BytesReader) -> T;
+
+    fn write_to_buffers(&self, bytes_writer: &BytesWriter);
+}
+
 pub struct BytesReader {
     instance: vm_buffers::BytesReader,
 }
