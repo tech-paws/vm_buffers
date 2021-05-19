@@ -2,6 +2,8 @@
 #[allow(clippy::all)]
 mod vm_buffers;
 
+use std::slice;
+
 use vm_memory::BufferAccessor;
 
 pub trait IntoVMBuffers {
@@ -39,6 +41,10 @@ impl BytesReader {
 
     pub fn read_byte(&mut self) -> u8 {
         unsafe { vm_buffers::vm_buffers_bytes_reader_read_byte(&mut self.instance) }
+    }
+
+    pub fn read_byte_buffer(&mut self, len: u64) -> *mut u8 {
+        unsafe { vm_buffers::vm_buffers_bytes_reader_read_bytes_buffer(&mut self.instance, len) }
     }
 
     pub fn read_i32(&mut self) -> i32 {
@@ -119,5 +125,22 @@ impl BytesWriter {
         unsafe {
             vm_buffers::vm_buffers_bytes_writer_write_double(&mut self.instance, value);
         };
+    }
+}
+
+impl IntoVMBuffers for String {
+    fn read_from_buffers(bytes_reader: &mut BytesReader) -> Self {
+        let len = bytes_reader.read_u64();
+        let buff = bytes_reader.read_byte_buffer(len);
+        let slice = unsafe { slice::from_raw_parts(buff, len as usize) };
+        unsafe { String::from_utf8_unchecked(slice.to_vec()) }
+    }
+
+    fn write_to_buffers(&self, bytes_writer: &mut BytesWriter) {
+        bytes_writer.write_u64(self.len() as u64);
+
+        for byte in self.bytes() {
+            bytes_writer.write_byte(byte);
+        }
     }
 }

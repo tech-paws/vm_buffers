@@ -60,3 +60,5 @@ extern "C" double vm_buffers_bytes_reader_read_double(BytesReader &reader);
 extern "C" uint8_t vm_buffers_bytes_reader_read_byte(BytesReader &reader);
 
 extern "C" char vm_buffers_bytes_reader_read_char(BytesReader &reader);
+
+extern "C" uint8_t* vm_buffers_bytes_reader_read_bytes_buffer(BytesReader &reader, size_t len);

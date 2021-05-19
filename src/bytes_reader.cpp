@@ -126,7 +126,17 @@ extern "C" char vm_buffers_bytes_reader_read_char(BytesReader &reader) {
     }
 
     auto const value = reader.buffer[reader.buffer_cursor];
-    reader.buffer_cursor += 1;;
+    reader.buffer_cursor += 1;
 
     return char(value);
+}
+
+extern "C" uint8_t* vm_buffers_bytes_reader_read_bytes_buffer(BytesReader &reader, size_t len) {
+    if (reader.buffer_cursor + len >= reader.buffer_size) {
+        // TODO(sysint64): Error buffer overflow
+    }
+
+    auto buf = reader.buffer + reader.buffer_cursor;
+    reader.buffer_cursor += len;
+    return buf;
 }

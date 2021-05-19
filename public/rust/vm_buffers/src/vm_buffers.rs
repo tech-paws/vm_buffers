@@ -739,3 +739,9 @@ extern "C" {
 extern "C" {
     pub fn vm_buffers_bytes_reader_read_char(reader: *mut BytesReader) -> ::std::os::raw::c_char;
 }
+extern "C" {
+    pub fn vm_buffers_bytes_reader_read_bytes_buffer(
+        reader: *mut BytesReader,
+        len: size_t,
+    ) -> *mut u8;
+}
