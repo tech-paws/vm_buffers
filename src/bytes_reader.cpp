@@ -16,6 +16,9 @@ extern "C" void vm_buffers_bytes_reader_reset(BytesReader &reader) {
     reader.buffer_cursor = 0;
 }
 
+extern "C" size_t vm_buffers_bytes_reader_current_offset(BytesReader &reader) {
+    return reader.buffer_cursor;
+}
 
 extern "C" int32_t vm_buffers_bytes_reader_read_int32_t(BytesReader &reader) {
     if (reader.buffer_cursor + sizeof(int32_t) >= reader.buffer_size) {
@@ -139,4 +142,12 @@ extern "C" uint8_t* vm_buffers_bytes_reader_read_bytes_buffer(BytesReader &reade
     auto buf = reader.buffer + reader.buffer_cursor;
     reader.buffer_cursor += len;
     return buf;
+}
+
+extern "C" void vm_buffers_bytes_reader_skip(BytesReader &reader, size_t len) {
+    if (reader.buffer_cursor + len >= reader.buffer_size) {
+        // TODO(sysint64): Error buffer overflow
+    }
+
+    reader.buffer_cursor += len;
 }

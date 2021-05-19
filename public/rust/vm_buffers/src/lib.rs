@@ -74,6 +74,14 @@ impl BytesReader {
     pub fn read_f64(&mut self) -> f64 {
         unsafe { vm_buffers::vm_buffers_bytes_reader_read_double(&mut self.instance) }
     }
+
+    pub fn current_offset(&mut self) -> u64 {
+        unsafe { vm_buffers::vm_buffers_bytes_reader_current_offset(&mut self.instance) }
+    }
+
+    pub fn skip(&mut self, len: u64) {
+        unsafe { vm_buffers::vm_buffers_bytes_reader_skip(&mut self.instance, len) };
+    }
 }
 
 impl BytesWriter {
@@ -133,6 +141,20 @@ impl BytesWriter {
         unsafe {
             vm_buffers::vm_buffers_bytes_writer_write_double(&mut self.instance, value);
         };
+    }
+
+    pub fn write_u64_at(&mut self, offset: u64, value: u64) {
+        unsafe {
+            vm_buffers::vm_buffers_bytes_writer_write_int64_t_at(
+                &mut self.instance,
+                offset,
+                value as i64,
+            )
+        };
+    }
+
+    pub fn current_offset(&mut self) -> u64 {
+        unsafe { vm_buffers::vm_buffers_bytes_writer_current_offset(&mut self.instance) }
     }
 }
 

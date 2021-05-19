@@ -43,6 +43,10 @@ extern "C" void vm_buffers_bytes_writer_write_char(BytesWriter &writer, char ch)
 
 extern "C" size_t vm_buffers_bytes_writer_size(BytesWriter &writer);
 
+extern "C" void vm_buffers_bytes_writer_write_int64_t_at(BytesWriter &writer, size_t offset, int64_t value);
+
+extern "C" size_t vm_buffers_bytes_writer_current_offset(BytesWriter &writer);
+
 // Reader
 
 extern "C" BytesReader vm_buffers_create_bytes_reader(ByteOrder byte_order, uint8_t* buffer, size_t buffer_size);
@@ -62,3 +66,7 @@ extern "C" uint8_t vm_buffers_bytes_reader_read_byte(BytesReader &reader);
 extern "C" char vm_buffers_bytes_reader_read_char(BytesReader &reader);
 
 extern "C" uint8_t* vm_buffers_bytes_reader_read_bytes_buffer(BytesReader &reader, size_t len);
+
+extern "C" void vm_buffers_bytes_reader_skip(BytesReader &reader, size_t len);
+
+extern "C" size_t vm_buffers_bytes_reader_current_offset(BytesReader &reader);

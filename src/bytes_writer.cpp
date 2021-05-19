@@ -20,6 +20,10 @@ extern "C" void vm_buffers_bytes_writer_clear(BytesWriter &writer) {
     writer.buffer_cursor = 0;
 }
 
+extern "C" size_t vm_buffers_bytes_writer_current_offset(BytesWriter &writer) {
+    return writer.buffer_cursor;
+}
+
 extern "C" void vm_buffers_bytes_writer_write_byte(BytesWriter &writer, uint8_t byte) {
     if (writer.buffer_cursor >= writer.buffer_size) {
         // TODO(sysint64): Error buffer overflow
@@ -128,4 +132,25 @@ extern "C" void vm_buffers_bytes_writer_write_double(BytesWriter &writer, double
     }
 
     writer.buffer_cursor += sizeof(double);
+}
+
+extern "C" void vm_buffers_bytes_writer_write_int64_t_at(BytesWriter &writer, size_t offset, int64_t value) {
+    if (offset + sizeof(int64_t) >= writer.buffer_size) {
+        // TODO(sysint64): Error buffer overflow
+    }
+
+    if (is_endian_mismatch(writer.byte_order)) {
+        swap_endian(value);
+    }
+
+    union {
+        int64_t val;
+        std::array<uint8_t, sizeof(int64_t)> raw;
+    } union_value {};
+
+    union_value.val = value;
+
+    for (size_t i = 0; i < sizeof(int64_t); i += 1) {
+        writer.buffer[offset + i] = union_value.raw[i];
+    }
 }

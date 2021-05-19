@@ -712,6 +712,16 @@ extern "C" {
     pub fn vm_buffers_bytes_writer_size(writer: *mut BytesWriter) -> size_t;
 }
 extern "C" {
+    pub fn vm_buffers_bytes_writer_write_int64_t_at(
+        writer: *mut BytesWriter,
+        offset: size_t,
+        value: i64,
+    );
+}
+extern "C" {
+    pub fn vm_buffers_bytes_writer_current_offset(writer: *mut BytesWriter) -> size_t;
+}
+extern "C" {
     pub fn vm_buffers_create_bytes_reader(
         byte_order: ByteOrder,
         buffer: *mut u8,
@@ -744,4 +754,10 @@ extern "C" {
         reader: *mut BytesReader,
         len: size_t,
     ) -> *mut u8;
+}
+extern "C" {
+    pub fn vm_buffers_bytes_reader_skip(reader: *mut BytesReader, len: size_t);
+}
+extern "C" {
+    pub fn vm_buffers_bytes_reader_current_offset(reader: *mut BytesReader) -> size_t;
 }
