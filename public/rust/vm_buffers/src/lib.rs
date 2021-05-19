@@ -4,8 +4,8 @@ mod vm_buffers;
 
 use vm_memory::BufferAccessor;
 
-pub trait IntoVMBuffers<T> {
-    fn read_from_buffers(bytes_reader: &BytesReader) -> T;
+pub trait IntoVMBuffers {
+    fn read_from_buffers(bytes_reader: &BytesReader) -> Self;
 
     fn write_to_buffers(&self, bytes_writer: &BytesWriter);
 }
