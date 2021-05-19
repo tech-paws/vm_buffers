@@ -5,9 +5,9 @@ mod vm_buffers;
 use vm_memory::BufferAccessor;
 
 pub trait IntoVMBuffers {
-    fn read_from_buffers(bytes_reader: &BytesReader) -> Self;
+    fn read_from_buffers(bytes_reader: &mut BytesReader) -> Self;
 
-    fn write_to_buffers(&self, bytes_writer: &BytesWriter);
+    fn write_to_buffers(&self, bytes_writer: &mut BytesWriter);
 }
 
 pub struct BytesReader {
