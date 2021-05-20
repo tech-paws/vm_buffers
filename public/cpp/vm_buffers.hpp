@@ -57,6 +57,8 @@ extern "C" int32_t vm_buffers_bytes_reader_read_int32_t(BytesReader &reader);
 
 extern "C" int64_t vm_buffers_bytes_reader_read_int64_t(BytesReader &reader);
 
+extern "C" int64_t vm_buffers_bytes_reader_read_int64_t_at(BytesReader &reader, size_t offset);
+
 extern "C" float vm_buffers_bytes_reader_read_float(BytesReader &reader);
 
 extern "C" double vm_buffers_bytes_reader_read_double(BytesReader &reader);

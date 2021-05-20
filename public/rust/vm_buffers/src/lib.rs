@@ -59,12 +59,22 @@ impl BytesReader {
         unsafe { vm_buffers::vm_buffers_bytes_reader_read_int64_t(&mut self.instance) }
     }
 
+    pub fn read_i64_at(&mut self, offset: u64) -> i64 {
+        unsafe { vm_buffers::vm_buffers_bytes_reader_read_int64_t_at(&mut self.instance, offset) }
+    }
+
     pub fn read_u32(&mut self) -> u32 {
         unsafe { vm_buffers::vm_buffers_bytes_reader_read_int32_t(&mut self.instance) as u32 }
     }
 
     pub fn read_u64(&mut self) -> u64 {
         unsafe { vm_buffers::vm_buffers_bytes_reader_read_int64_t(&mut self.instance) as u64 }
+    }
+
+    pub fn read_u64_at(&mut self, offset: u64) -> u64 {
+        unsafe {
+            vm_buffers::vm_buffers_bytes_reader_read_int64_t_at(&mut self.instance, offset) as u64
+        }
     }
 
     pub fn read_f32(&mut self) -> f32 {

@@ -738,6 +738,10 @@ extern "C" {
     pub fn vm_buffers_bytes_reader_read_int64_t(reader: *mut BytesReader) -> i64;
 }
 extern "C" {
+    pub fn vm_buffers_bytes_reader_read_int64_t_at(reader: *mut BytesReader, offset: size_t)
+        -> i64;
+}
+extern "C" {
     pub fn vm_buffers_bytes_reader_read_float(reader: *mut BytesReader) -> f32;
 }
 extern "C" {

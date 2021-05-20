@@ -66,6 +66,27 @@ extern "C" int64_t vm_buffers_bytes_reader_read_int64_t(BytesReader &reader) {
     return union_value.val;
 }
 
+extern "C" int64_t vm_buffers_bytes_reader_read_int64_t_at(BytesReader &reader, size_t offset) {
+    if (offset + sizeof(int64_t) >= reader.buffer_size) {
+        // TODO(sysint64): Error buffer overflow
+    }
+
+    union {
+        int64_t val;
+        std::array<uint8_t, sizeof(int64_t)> raw;
+    } union_value {};
+
+    for (size_t i = 0; i < sizeof(int64_t); i += 1) {
+        union_value.raw[i] = reader.buffer[offset + i];
+    }
+
+    if (is_endian_mismatch(reader.byte_order)) {
+        swap_endian(union_value.raw);
+    }
+
+    return union_value.val;
+}
+
 extern "C" float vm_buffers_bytes_reader_read_float(BytesReader &reader) {
     if (reader.buffer_cursor + sizeof(float) >= reader.buffer_size) {
         // TODO(sysint64): Error buffer overflow
