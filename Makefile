@@ -14,7 +14,7 @@ build: $(LIBRARY)
 
 $(LIBRARY): $(OBJECTS)
 	$(CXX) -shared $(LDFLAGS) $(OBJECTS) -o build/$(LIBRARY)
-	bindgen public/cpp/vm_buffers.hpp -o public/rust/vm_buffers/src/vm_buffers.rs
+	bindgen public/cpp/vm_buffers.hpp -o public/rust/vm_buffers/src/c_api.rs
 	cd public/rust/vm_buffers && cargo update && cargo clippy && cargo test
 
 $(BUILDDIR)/%.o: %.cpp

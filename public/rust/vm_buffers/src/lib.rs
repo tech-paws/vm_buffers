@@ -1,6 +1,6 @@
 #[allow(warnings)]
 #[allow(clippy::all)]
-mod vm_buffers;
+pub mod c_api;
 
 use std::slice;
 
@@ -13,157 +13,157 @@ pub trait IntoVMBuffers {
 }
 
 pub struct BytesReader {
-    instance: vm_buffers::BytesReader,
+    instance: c_api::BytesReader,
 }
 
 pub struct BytesWriter {
-    instance: vm_buffers::BytesWriter,
+    instance: c_api::BytesWriter,
 }
 
 pub enum ByteOrder {
-    LittleEndian = vm_buffers::ByteOrder_LittleEndian as isize,
-    BigEndian = vm_buffers::ByteOrder_BigEndian as isize,
-    Native = vm_buffers::ByteOrder_Native as isize,
+    LittleEndian = c_api::ByteOrder_LittleEndian as isize,
+    BigEndian = c_api::ByteOrder_BigEndian as isize,
+    Native = c_api::ByteOrder_Native as isize,
 }
 
 impl BytesReader {
     pub fn new<T: BufferAccessor>(byte_order: ByteOrder, buffer_accessor: &T) -> Self {
         let instance = unsafe {
-            vm_buffers::vm_buffers_create_bytes_reader(
+            c_api::vm_buffers_create_bytes_reader(
                 byte_order as u32,
                 buffer_accessor.get_buffer_ptr(),
-                buffer_accessor.get_buffer_size() as vm_buffers::size_t,
+                buffer_accessor.get_buffer_size() as c_api::size_t,
             )
         };
 
         BytesReader { instance }
     }
 
-    pub unsafe fn raw(&mut self) -> *mut vm_buffers::BytesReader {
+    pub unsafe fn raw(&mut self) -> *mut c_api::BytesReader {
         &mut self.instance
     }
 
     pub fn reset(&mut self) {
-        unsafe { vm_buffers::vm_buffers_bytes_reader_reset(&mut self.instance) };
+        unsafe { c_api::vm_buffers_bytes_reader_reset(&mut self.instance) };
     }
 
     pub fn read_byte(&mut self) -> u8 {
-        unsafe { vm_buffers::vm_buffers_bytes_reader_read_byte(&mut self.instance) }
+        unsafe { c_api::vm_buffers_bytes_reader_read_byte(&mut self.instance) }
     }
 
     pub fn read_byte_buffer(&mut self, len: u64) -> *mut u8 {
-        unsafe { vm_buffers::vm_buffers_bytes_reader_read_bytes_buffer(&mut self.instance, len) }
+        unsafe { c_api::vm_buffers_bytes_reader_read_bytes_buffer(&mut self.instance, len) }
     }
 
     pub fn read_i32(&mut self) -> i32 {
-        unsafe { vm_buffers::vm_buffers_bytes_reader_read_int32_t(&mut self.instance) }
+        unsafe { c_api::vm_buffers_bytes_reader_read_int32_t(&mut self.instance) }
     }
 
     pub fn read_i64(&mut self) -> i64 {
-        unsafe { vm_buffers::vm_buffers_bytes_reader_read_int64_t(&mut self.instance) }
+        unsafe { c_api::vm_buffers_bytes_reader_read_int64_t(&mut self.instance) }
     }
 
     pub fn read_i64_at(&mut self, offset: u64) -> i64 {
-        unsafe { vm_buffers::vm_buffers_bytes_reader_read_int64_t_at(&mut self.instance, offset) }
+        unsafe { c_api::vm_buffers_bytes_reader_read_int64_t_at(&mut self.instance, offset) }
     }
 
     pub fn read_u32(&mut self) -> u32 {
-        unsafe { vm_buffers::vm_buffers_bytes_reader_read_int32_t(&mut self.instance) as u32 }
+        unsafe { c_api::vm_buffers_bytes_reader_read_int32_t(&mut self.instance) as u32 }
     }
 
     pub fn read_u64(&mut self) -> u64 {
-        unsafe { vm_buffers::vm_buffers_bytes_reader_read_int64_t(&mut self.instance) as u64 }
+        unsafe { c_api::vm_buffers_bytes_reader_read_int64_t(&mut self.instance) as u64 }
     }
 
     pub fn read_u64_at(&mut self, offset: u64) -> u64 {
         unsafe {
-            vm_buffers::vm_buffers_bytes_reader_read_int64_t_at(&mut self.instance, offset) as u64
+            c_api::vm_buffers_bytes_reader_read_int64_t_at(&mut self.instance, offset) as u64
         }
     }
 
     pub fn read_f32(&mut self) -> f32 {
-        unsafe { vm_buffers::vm_buffers_bytes_reader_read_float(&mut self.instance) }
+        unsafe { c_api::vm_buffers_bytes_reader_read_float(&mut self.instance) }
     }
 
     pub fn read_f64(&mut self) -> f64 {
-        unsafe { vm_buffers::vm_buffers_bytes_reader_read_double(&mut self.instance) }
+        unsafe { c_api::vm_buffers_bytes_reader_read_double(&mut self.instance) }
     }
 
     pub fn current_offset(&mut self) -> u64 {
-        unsafe { vm_buffers::vm_buffers_bytes_reader_current_offset(&mut self.instance) }
+        unsafe { c_api::vm_buffers_bytes_reader_current_offset(&mut self.instance) }
     }
 
     pub fn skip(&mut self, len: u64) {
-        unsafe { vm_buffers::vm_buffers_bytes_reader_skip(&mut self.instance, len) };
+        unsafe { c_api::vm_buffers_bytes_reader_skip(&mut self.instance, len) };
     }
 }
 
 impl BytesWriter {
     pub fn new(byte_order: ByteOrder, buffer_accessor: &dyn BufferAccessor) -> Self {
         let instance = unsafe {
-            vm_buffers::vm_buffers_create_bytes_writer(
+            c_api::vm_buffers_create_bytes_writer(
                 byte_order as u32,
                 buffer_accessor.get_buffer_ptr(),
-                buffer_accessor.get_buffer_size() as vm_buffers::size_t,
+                buffer_accessor.get_buffer_size() as c_api::size_t,
             )
         };
 
         BytesWriter { instance }
     }
 
-    pub unsafe fn raw(&mut self) -> *mut vm_buffers::BytesWriter {
+    pub unsafe fn raw(&mut self) -> *mut c_api::BytesWriter {
         &mut self.instance
     }
 
     pub fn clear(&mut self) {
-        unsafe { vm_buffers::vm_buffers_bytes_writer_clear(&mut self.instance) };
+        unsafe { c_api::vm_buffers_bytes_writer_clear(&mut self.instance) };
     }
 
     pub fn write_byte(&mut self, value: u8) {
         unsafe {
-            vm_buffers::vm_buffers_bytes_writer_write_byte(&mut self.instance, value);
+            c_api::vm_buffers_bytes_writer_write_byte(&mut self.instance, value);
         };
     }
 
     pub fn write_i32(&mut self, value: i32) {
         unsafe {
-            vm_buffers::vm_buffers_bytes_writer_write_int32_t(&mut self.instance, value);
+            c_api::vm_buffers_bytes_writer_write_int32_t(&mut self.instance, value);
         };
     }
 
     pub fn write_i64(&mut self, value: i64) {
         unsafe {
-            vm_buffers::vm_buffers_bytes_writer_write_int64_t(&mut self.instance, value);
+            c_api::vm_buffers_bytes_writer_write_int64_t(&mut self.instance, value);
         };
     }
 
     pub fn write_u32(&mut self, value: u32) {
         unsafe {
-            vm_buffers::vm_buffers_bytes_writer_write_int32_t(&mut self.instance, value as i32);
+            c_api::vm_buffers_bytes_writer_write_int32_t(&mut self.instance, value as i32);
         };
     }
 
     pub fn write_u64(&mut self, value: u64) {
         unsafe {
-            vm_buffers::vm_buffers_bytes_writer_write_int64_t(&mut self.instance, value as i64);
+            c_api::vm_buffers_bytes_writer_write_int64_t(&mut self.instance, value as i64);
         };
     }
 
     pub fn write_f32(&mut self, value: f32) {
         unsafe {
-            vm_buffers::vm_buffers_bytes_writer_write_float(&mut self.instance, value);
+            c_api::vm_buffers_bytes_writer_write_float(&mut self.instance, value);
         };
     }
 
     pub fn write_f64(&mut self, value: f64) {
         unsafe {
-            vm_buffers::vm_buffers_bytes_writer_write_double(&mut self.instance, value);
+            c_api::vm_buffers_bytes_writer_write_double(&mut self.instance, value);
         };
     }
 
     pub fn write_u64_at(&mut self, offset: u64, value: u64) {
         unsafe {
-            vm_buffers::vm_buffers_bytes_writer_write_int64_t_at(
+            c_api::vm_buffers_bytes_writer_write_int64_t_at(
                 &mut self.instance,
                 offset,
                 value as i64,
@@ -172,7 +172,7 @@ impl BytesWriter {
     }
 
     pub fn current_offset(&mut self) -> u64 {
-        unsafe { vm_buffers::vm_buffers_bytes_writer_current_offset(&mut self.instance) }
+        unsafe { c_api::vm_buffers_bytes_writer_current_offset(&mut self.instance) }
     }
 }
 
