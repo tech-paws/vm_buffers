@@ -39,6 +39,10 @@ impl BytesReader {
         BytesReader { instance }
     }
 
+    pub unsafe fn raw(&mut self) -> *mut vm_buffers::BytesReader {
+        &mut self.instance
+    }
+
     pub fn reset(&mut self) {
         unsafe { vm_buffers::vm_buffers_bytes_reader_reset(&mut self.instance) };
     }
@@ -105,6 +109,10 @@ impl BytesWriter {
         };
 
         BytesWriter { instance }
+    }
+
+    pub unsafe fn raw(&mut self) -> *mut vm_buffers::BytesWriter {
+        &mut self.instance
     }
 
     pub fn clear(&mut self) {
