@@ -266,7 +266,7 @@ static void read_double_be_test() {
 }
 
 static void read_demo_test() {
-    buffer[0] = 0x01;
+    buffer[0] = 0x00;
     buffer[1] = 0x00;
     buffer[2] = 0xf6;
     buffer[3] = 0x42;
@@ -276,11 +276,24 @@ static void read_demo_test() {
     buffer[6] = 0xc0;
     buffer[7] = 0x41;
 
+// w: 191.000000, h: 17.000000
+// w: 123.000000, h: 24.000000
+
+// |02000000 00000000 10000000 00000000| ................ 00000000
+// |74656368 2e706177 732e636c 69656e74| tech.paws.client 00000010
+// |05000100 00000000 08000000 00000000| ................ 00000020
+// |00003f43 00008841 05000100 00000000| ..?C...A........ 00000030
+// |08000000 00000000 0000f642 0000c041| ...........B...A 00000040
+// |00000000 00000000 00000000 00000000| ................ 00000050
+// |00000000 00000000 00000000 00000000| ................ 00000060
+// |00000000 00000000 00000000 00000000| ................ 00000070
+
     // 0100f642
     // 0000c041
 
-    const auto value = vm_buffers_bytes_reader_read_float(&bytes_reader_le);
-    printf("VALUE: %f", value);
+    const auto w = vm_buffers_bytes_reader_read_float(&bytes_reader_le);
+    const auto h = vm_buffers_bytes_reader_read_float(&bytes_reader_le);
+    printf("w: %f, h: %f", w, h);
 }
 
 // Tests entry point -------------------------------------------------------------------------------

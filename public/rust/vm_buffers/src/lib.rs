@@ -39,6 +39,10 @@ impl BytesReader {
         BytesReader { instance }
     }
 
+    pub fn from_raw(instance: c_api::BytesReader) -> Self {
+        BytesReader { instance }
+    }
+
     pub unsafe fn raw(&mut self) -> *mut c_api::BytesReader {
         &mut self.instance
     }
@@ -76,9 +80,7 @@ impl BytesReader {
     }
 
     pub fn read_u64_at(&mut self, offset: u64) -> u64 {
-        unsafe {
-            c_api::vm_buffers_bytes_reader_read_int64_t_at(&mut self.instance, offset) as u64
-        }
+        unsafe { c_api::vm_buffers_bytes_reader_read_int64_t_at(&mut self.instance, offset) as u64 }
     }
 
     pub fn read_f32(&mut self) -> f32 {
@@ -108,6 +110,10 @@ impl BytesWriter {
             )
         };
 
+        BytesWriter { instance }
+    }
+
+    pub fn from_raw(instance: c_api::BytesWriter) -> Self {
         BytesWriter { instance }
     }
 
