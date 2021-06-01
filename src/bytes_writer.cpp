@@ -1,5 +1,6 @@
 #include "vm_buffers.hpp"
 #include "helpers.hpp"
+#include "log.hpp"
 
 extern "C" BytesWriter vm_buffers_create_bytes_writer(ByteOrder byte_order, uint8_t* buffer, size_t buffer_size) {
     BytesWriter writer;
@@ -26,7 +27,8 @@ extern "C" size_t vm_buffers_bytes_writer_current_offset(BytesWriter *writer) {
 
 extern "C" void vm_buffers_bytes_writer_write_byte(BytesWriter *writer, uint8_t byte) {
     if (writer->buffer_cursor >= writer->buffer_size) {
-        // TODO(sysint64): Error buffer overflow
+        log_error("Buffer overflow");
+        exit(EXIT_FAILURE);
     }
 
     writer->buffer[writer->buffer_cursor] = byte;
@@ -35,7 +37,8 @@ extern "C" void vm_buffers_bytes_writer_write_byte(BytesWriter *writer, uint8_t 
 
 extern "C" void vm_buffers_bytes_writer_write_char(BytesWriter *writer, char ch) {
     if (writer->buffer_cursor >= writer->buffer_size) {
-        // TODO(sysint64): Error buffer overflow
+        log_error("Buffer overflow");
+        exit(EXIT_FAILURE);
     }
 
     writer->buffer[writer->buffer_cursor] = (uint8_t) ch;
@@ -44,7 +47,8 @@ extern "C" void vm_buffers_bytes_writer_write_char(BytesWriter *writer, char ch)
 
 extern "C" void vm_buffers_bytes_writer_write_int32_t(BytesWriter *writer, int32_t value) {
     if (writer->buffer_cursor + sizeof(int32_t) >= writer->buffer_size) {
-        // TODO(sysint64): Error buffer overflow
+        log_error("Buffer overflow");
+        exit(EXIT_FAILURE);
     }
 
     if (is_endian_mismatch(writer->byte_order)) {
@@ -67,7 +71,8 @@ extern "C" void vm_buffers_bytes_writer_write_int32_t(BytesWriter *writer, int32
 
 extern "C" void vm_buffers_bytes_writer_write_int64_t(BytesWriter *writer, int64_t value) {
     if (writer->buffer_cursor + sizeof(int64_t) >= writer->buffer_size) {
-        // TODO(sysint64): Error buffer overflow
+        log_error("Buffer overflow");
+        exit(EXIT_FAILURE);
     }
 
     if (is_endian_mismatch(writer->byte_order)) {
@@ -90,7 +95,8 @@ extern "C" void vm_buffers_bytes_writer_write_int64_t(BytesWriter *writer, int64
 
 extern "C" void vm_buffers_bytes_writer_write_float(BytesWriter *writer, float value) {
     if (writer->buffer_cursor + sizeof(float) >= writer->buffer_size) {
-        // TODO(sysint64): Error buffer overflow
+        log_error("Buffer overflow");
+        exit(EXIT_FAILURE);
     }
 
     if (is_endian_mismatch(writer->byte_order)) {
@@ -113,7 +119,8 @@ extern "C" void vm_buffers_bytes_writer_write_float(BytesWriter *writer, float v
 
 extern "C" void vm_buffers_bytes_writer_write_double(BytesWriter *writer, double value) {
     if (writer->buffer_cursor + sizeof(double) >= writer->buffer_size) {
-        // TODO(sysint64): Error buffer overflow
+        log_error("Buffer overflow");
+        exit(EXIT_FAILURE);
     }
 
     if (is_endian_mismatch(writer->byte_order)) {
@@ -136,7 +143,8 @@ extern "C" void vm_buffers_bytes_writer_write_double(BytesWriter *writer, double
 
 extern "C" void vm_buffers_bytes_writer_write_int64_t_at(BytesWriter *writer, size_t offset, int64_t value) {
     if (offset + sizeof(int64_t) >= writer->buffer_size) {
-        // TODO(sysint64): Error buffer overflow
+        log_error("Buffer overflow");
+        exit(EXIT_FAILURE);
     }
 
     if (is_endian_mismatch(writer->byte_order)) {

@@ -1,5 +1,7 @@
 #include "vm_buffers.hpp"
 #include "helpers.hpp"
+#include "log.hpp"
+#include <cstdlib>
 
 extern "C" BytesReader vm_buffers_create_bytes_reader(ByteOrder byte_order, uint8_t* buffer, size_t buffer_size) {
     BytesReader reader;
@@ -22,7 +24,8 @@ extern "C" size_t vm_buffers_bytes_reader_current_offset(BytesReader *reader) {
 
 extern "C" int32_t vm_buffers_bytes_reader_read_int32_t(BytesReader *reader) {
     if (reader->buffer_cursor + sizeof(int32_t) >= reader->buffer_size) {
-        // TODO(sysint64): Error buffer overflow
+        log_error("Buffer overflow");
+        exit(EXIT_FAILURE);
     }
 
     union {
@@ -45,7 +48,8 @@ extern "C" int32_t vm_buffers_bytes_reader_read_int32_t(BytesReader *reader) {
 
 extern "C" int64_t vm_buffers_bytes_reader_read_int64_t(BytesReader *reader) {
     if (reader->buffer_cursor + sizeof(int64_t) >= reader->buffer_size) {
-        // TODO(sysint64): Error buffer overflow
+        log_error("Buffer overflow");
+        exit(EXIT_FAILURE);
     }
 
     union {
@@ -68,7 +72,8 @@ extern "C" int64_t vm_buffers_bytes_reader_read_int64_t(BytesReader *reader) {
 
 extern "C" int64_t vm_buffers_bytes_reader_read_int64_t_at(BytesReader *reader, size_t offset) {
     if (offset + sizeof(int64_t) >= reader->buffer_size) {
-        // TODO(sysint64): Error buffer overflow
+        log_error("Buffer overflow");
+        exit(EXIT_FAILURE);
     }
 
     union {
@@ -89,7 +94,8 @@ extern "C" int64_t vm_buffers_bytes_reader_read_int64_t_at(BytesReader *reader, 
 
 extern "C" float vm_buffers_bytes_reader_read_float(BytesReader *reader) {
     if (reader->buffer_cursor + sizeof(float) >= reader->buffer_size) {
-        // TODO(sysint64): Error buffer overflow
+        log_error("Buffer overflow");
+        exit(EXIT_FAILURE);
     }
 
     union {
@@ -112,7 +118,8 @@ extern "C" float vm_buffers_bytes_reader_read_float(BytesReader *reader) {
 
 extern "C" double vm_buffers_bytes_reader_read_double(BytesReader *reader) {
     if (reader->buffer_cursor + sizeof(double) >= reader->buffer_size) {
-        // TODO(sysint64): Error buffer overflow
+        log_error("Buffer overflow");
+        exit(EXIT_FAILURE);
     }
 
     union {
@@ -135,7 +142,8 @@ extern "C" double vm_buffers_bytes_reader_read_double(BytesReader *reader) {
 
 extern "C" uint8_t vm_buffers_bytes_reader_read_byte(BytesReader *reader) {
     if (reader->buffer_cursor >= reader->buffer_size) {
-        // TODO(sysint64): Error buffer overflow
+        log_error("Buffer overflow");
+        exit(EXIT_FAILURE);
     }
 
     auto const value = reader->buffer[reader->buffer_cursor];
@@ -146,7 +154,8 @@ extern "C" uint8_t vm_buffers_bytes_reader_read_byte(BytesReader *reader) {
 
 extern "C" char vm_buffers_bytes_reader_read_char(BytesReader *reader) {
     if (reader->buffer_cursor >= reader->buffer_size) {
-        // TODO(sysint64): Error buffer overflow
+        log_error("Buffer overflow");
+        exit(EXIT_FAILURE);
     }
 
     auto const value = reader->buffer[reader->buffer_cursor];
@@ -157,7 +166,8 @@ extern "C" char vm_buffers_bytes_reader_read_char(BytesReader *reader) {
 
 extern "C" uint8_t* vm_buffers_bytes_reader_read_bytes_buffer(BytesReader *reader, size_t len) {
     if (reader->buffer_cursor + len >= reader->buffer_size) {
-        // TODO(sysint64): Error buffer overflow
+        log_error("Buffer overflow");
+        exit(EXIT_FAILURE);
     }
 
     auto buf = reader->buffer + reader->buffer_cursor;
@@ -167,7 +177,8 @@ extern "C" uint8_t* vm_buffers_bytes_reader_read_bytes_buffer(BytesReader *reade
 
 extern "C" void vm_buffers_bytes_reader_skip(BytesReader *reader, size_t len) {
     if (reader->buffer_cursor + len >= reader->buffer_size) {
-        // TODO(sysint64): Error buffer overflow
+        log_error("Buffer overflow");
+        exit(EXIT_FAILURE);
     }
 
     reader->buffer_cursor += len;
